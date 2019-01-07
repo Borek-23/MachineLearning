@@ -13,8 +13,19 @@ def printScore(score_array, label,modelName):
     avg = np.mean(score_array)
     std = np.std(score_array)
     print("{:s}. {:s}. Mean: {:f} - Standard Deviation: {:f}".format(modelName,label,avg,std))
- 
+    import matplotlib.pyplot as plt
+    # This is providing styles for plotting
+    from matplotlib import style
+    # Style specifier
+    style.use('ggplot')    
+    
 
+    avg.scatter()
+    std.scatter()
+    plt.xlabel('Schools')
+    plt.ylabel('Score')
+    plt.show()
+ 
 #Evaluates model and gives f1-score. Generic to all algorithms
 def scoreModel(model, X_test, y_test):
     from sklearn.metrics import f1_score
