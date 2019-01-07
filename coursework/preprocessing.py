@@ -5,6 +5,8 @@ Created on Tue Oct 23 15:34:58 2018
 @author: s15106137
 """
 
+VERBOSE = True
+
 
 import pandas as pd
 grouped = pd.read_csv('csv/england_cfrgrouped.csv')
@@ -82,6 +84,33 @@ dropped = removeValue(dropped, "..")
 dropped = removeValue(dropped, "")
 dropped = dropped.dropna(0, 'any')
 
-dropped = normaliseAllColumns(dropped)
+dropped = normaliseAllColumns(dropped)#
+print(type(dropped))
 dropped.to_csv('processedData.csv')
 print("done")
+
+
+def smoteIt(X, y):
+    from imblearn.over_sampling import SMOTE
+    if(VERBOSE):
+        print("Before SMOTE: {0} values".format(len(y.index)))
+    sm = SMOTE(random_state=42)
+    X, y = sm.fit_resample(X, y)
+    if(VERBOSE):
+        print("After SMOTE: {0} values".format(len(y)))
+    return X, y
+
+
+def splitData(data, target_field):
+    y = data.loc[:,[target_field]]
+    X = data.drop(target_field, axis=1)
+    return X, y
+
+
+X, y = splitData(dropped, "Overall effectiveness")
+smoteX, smotey = smoteIt(X, y)
+Xframe = pd.DataFrame(smoteX)
+print(Xframe)
+yframe = pd.DataFrame(smotey)
+Xframe.to_csv('X.csv')
+yframe.to_csv('y.csv')
