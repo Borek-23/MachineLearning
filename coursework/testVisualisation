@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan  8 19:17:46 2019
+
+@author: borek
+"""
+
+from sklearn import svm
+X = [[0, 0], [1, 1]]
+y = [0, 1]
+clf = svm.SVC(gamma=0.001)
+clf.fit(X, y)
+
+clf.predict([[2., 2.]])
+
+clf.support_vectors_
+
+print(clf.support_vectors_)
